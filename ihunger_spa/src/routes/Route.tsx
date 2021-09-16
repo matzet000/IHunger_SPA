@@ -21,23 +21,38 @@ const Route: React.FC<RouteProps> = ({
 }) => {
   const { user } = useAuth();
 
+  function isAllowed(): boolean {
+    if (user) {
+      return true;
+    }
+    if (!isPrivate) {
+      return true;
+    }
+
+    return false;
+  }
+
   return (
-    /* <ReactDOMRoute
+    <ReactDOMRoute
       {...rest}
-      render={({ location }) => (isPrivate === !!user ? (
-        <Component />
-      ) : (
-        <Redirect
-          to={{
-            pathname: isPrivate ? '/dashboard' : '/',
-            state: { from: location },
-          }}
-        />
-      ))}
-    /> */
+      render={({ location }) =>
+        isAllowed() ? (
+          <Component />
+        ) : (
+          <Redirect
+            to={{
+              pathname: isPrivate ? '/' : '/dashboard',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+    /*
     <ReactDOMRoute {...rest}>
       <Component />
     </ReactDOMRoute>
+    */
   );
 };
 

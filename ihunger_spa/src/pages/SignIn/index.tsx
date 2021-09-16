@@ -9,6 +9,7 @@ import {
   Input,
   Button,
   Image,
+  useToast,
 } from '@chakra-ui/react';
 
 import { useHistory } from 'react-router-dom';
@@ -17,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '../../hooks/auth';
 
-import img from '../../assets/IHunger_logo.png';
+import img from '../../assets/img/IHunger_logo.png';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -30,12 +31,17 @@ type LoginFormInputs = {
 };
 
 const SignIn: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
   const { signIn } = useAuth();
+  const toast = useToast();
   const history = useHistory();
 
   const onSubmit = async (values: LoginFormInputs) => {
@@ -45,18 +51,28 @@ const SignIn: React.FC = () => {
         password: values.password,
       });
 
+      toast({
+        title: 'Success login.',
+        description: 'Can use the system',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+
       history.push('/dashboard');
     } catch (err) {
-      // erro
+      toast({
+        title: 'Failure login.',
+        description: 'Check password and e-mail',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <VStack
-      spacing={4}
-      align="center"
-      justify="center"
-    >
+    <VStack spacing={4} align="center" justify="center">
       <Image boxSize="400px" src={img} alt="logo" />
       <form style={{ width: 350 }} onSubmit={handleSubmit(onSubmit)}>
         <FormControl
