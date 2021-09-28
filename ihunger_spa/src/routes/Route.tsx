@@ -22,13 +22,12 @@ const Route: React.FC<RouteProps> = ({
   const { user } = useAuth();
 
   function isAllowed(): boolean {
-    if (user) {
-      return true;
-    }
     if (!isPrivate) {
       return true;
     }
-
+    if (user) {
+      return true;
+    }
     return false;
   }
 

@@ -35,7 +35,7 @@ const FilterRestaurant: React.FC = () => {
       <HStack spacing={4}>
         <Box w="200px">
           <Select
-            placeholder="Restaurant type"
+            placeholder="Default"
             bg="gray.800"
             focusBorderColor="gray.800"
             colorScheme="green"

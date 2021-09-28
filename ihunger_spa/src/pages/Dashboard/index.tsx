@@ -1,36 +1,30 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-children-prop */
 /* eslint-disable no-unused-expressions */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  Grid,
-  Box,
-  SimpleGrid,
-  HStack,
-  Select,
-  Text,
-  Switch,
-  VStack,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Badge,
-  Image,
-} from '@chakra-ui/react';
+import { Grid, Box, SimpleGrid } from '@chakra-ui/react';
 
-import { Search2Icon, StarIcon } from '@chakra-ui/icons';
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
 import Navbar from '../../components/Navbar';
 import asianImg from '../../assets/img/asian_food.jpg';
 import pizzaImg from '../../assets/img/pizza.jpg';
 import FilterRestaurant from '../../components/Filter/FilterRestaurant';
 import ItemRestaurant from '../../components/List/Item/ItemRestaurant';
+import Restaurant from '../../models/Restaurant/Restaurant';
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
-  const history = useHistory();
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  // const { user } = useAuth();
+  // const history = useHistory();
+
+  useEffect(() => {
+    api.get<Restaurant[]>(`restaurants`).then(response => {
+      setRestaurants(response.data);
+    });
+  }, []);
 
   return (
     <>
@@ -49,22 +43,18 @@ const Dashboard: React.FC = () => {
         </SimpleGrid>
         <SimpleGrid columns={1} spacing={5} mt="20px">
           <FilterRestaurant />
-
-          <ItemRestaurant
-            imageUrl={pizzaImg}
-            imageAlt="Italian Food"
-            title="Italian Food"
-            reviewCount={100}
-            rating={3}
-          />
-
-          <ItemRestaurant
-            imageUrl={asianImg}
-            imageAlt="Asian Food"
-            title="Asian Food"
-            reviewCount={100}
-            rating={3}
-          />
+          {restaurants.map(restaurant => (
+            <ItemRestaurant
+              key={restaurant.id}
+              imageUrl={pizzaImg}
+              imageAlt={restaurant.description}
+              title={restaurant.name}
+              reviewCount={restaurant.comments.length}
+              rating={Number(
+                restaurant.comments.map(comment => comment.starts),
+              )}
+            />
+          ))}
         </SimpleGrid>
         <SimpleGrid columns={1} spacing={5} mt="20px">
           <Box height="80px" />
