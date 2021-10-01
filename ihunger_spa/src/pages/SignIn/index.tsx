@@ -10,6 +10,7 @@ import {
   Button,
   Image,
   useToast,
+  Divider,
 } from '@chakra-ui/react';
 
 import { useHistory } from 'react-router-dom';
@@ -71,9 +72,13 @@ const SignIn: React.FC = () => {
     }
   };
 
+  const toSingUo = () => {
+    history.push('/signup');
+  };
+
   return (
     <VStack spacing={4} align="center" justify="center">
-      <Image boxSize="400px" src={img} alt="logo" />
+      <Image boxSize="300px" src={img} alt="logo" />
       <form style={{ width: 350 }} onSubmit={handleSubmit(onSubmit)}>
         <FormControl
           isInvalid={!!errors?.email?.message}
@@ -119,6 +124,21 @@ const SignIn: React.FC = () => {
           disabled={!!errors.email || !!errors.password}
         >
           Login
+        </Button>
+
+        <Divider mt="6" orientation="horizontal" />
+
+        <Button
+          onClick={toSingUo}
+          mt="6"
+          mb="6"
+          p="4"
+          mx="4"
+          w="90%"
+          colorScheme="green"
+          variant="solid"
+        >
+          Create a account
         </Button>
       </form>
     </VStack>

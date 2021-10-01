@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Grid, Box, SimpleGrid } from '@chakra-ui/react';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 import Navbar from '../../components/Navbar';
