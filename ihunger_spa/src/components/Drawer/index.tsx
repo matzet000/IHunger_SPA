@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { BiChevronRightCircle } from 'react-icons/bi';
+import { useHistory } from 'react-router-dom';
 
 import imgLogo from '../../assets/img/IHunger_logo.png';
 
@@ -28,6 +29,20 @@ const DrawerCustom: React.FC<DrawerCustomProps> = ({
   onOpen,
   onClose,
 }: DrawerCustomProps) => {
+  const history = useHistory();
+
+  const toHome = () => {
+    history.push('/dashboard');
+  };
+
+  const toProfile = () => {
+    history.push('/profile');
+  };
+
+  const toOrders = () => {
+    history.push('/orders');
+  };
+
   return (
     <>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
@@ -51,6 +66,7 @@ const DrawerCustom: React.FC<DrawerCustomProps> = ({
                 colorScheme="green"
                 variant="solid"
                 mt="10px"
+                onClick={toHome}
               >
                 <Text size="24px">Home</Text>
               </Button>
@@ -59,6 +75,7 @@ const DrawerCustom: React.FC<DrawerCustomProps> = ({
                 colorScheme="green"
                 variant="solid"
                 mt="10px"
+                onClick={toOrders}
               >
                 <Text size="24px">Orders</Text>
               </Button>
@@ -67,6 +84,7 @@ const DrawerCustom: React.FC<DrawerCustomProps> = ({
                 colorScheme="green"
                 variant="solid"
                 mt="10px"
+                onClick={toProfile}
               >
                 <Text size="24px">Profile</Text>
               </Button>

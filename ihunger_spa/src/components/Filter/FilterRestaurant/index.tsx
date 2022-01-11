@@ -11,9 +11,21 @@ import {
   VStack,
   Text,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CategoryRestaurant from '../../../models/Restaurant/CategoryRestaurant';
+import api from '../../../services/api';
 
 const FilterRestaurant: React.FC = () => {
+  const [categoryRestaurants, setCategoryRestaurants] = useState<
+    CategoryRestaurant[]
+  >([]);
+
+  useEffect(() => {
+    api.get<CategoryRestaurant[]>(`category-restaurants`).then(response => {
+      setCategoryRestaurants(response.data);
+    });
+  }, []);
+
   return (
     <VStack
       spacing={4}
@@ -23,7 +35,7 @@ const FilterRestaurant: React.FC = () => {
       pl="10px"
       pr="10px"
       borderRadius="30px"
-      h="130px"
+      h="180px"
     >
       <InputGroup>
         <InputLeftElement
@@ -32,7 +44,7 @@ const FilterRestaurant: React.FC = () => {
         />
         <Input type="tel" placeholder="Restaurant name" />
       </InputGroup>
-      <HStack spacing={4}>
+      <HStack spacing={2}>
         <Box w="200px">
           <Select
             placeholder="Default"
@@ -41,11 +53,15 @@ const FilterRestaurant: React.FC = () => {
             colorScheme="green"
             borderColor="gray.300"
           >
-            <option value="option1">Asian</option>
-            <option value="option2">Arabic</option>
-            <option value="option3">Italian</option>
+            {categoryRestaurants.map(categoryRestaurant => (
+              <option key={categoryRestaurant.id} value={categoryRestaurant.id}>
+                {categoryRestaurant.name}
+              </option>
+            ))}
           </Select>
         </Box>
+      </HStack>
+      <HStack>
         <Box>
           <HStack>
             <Text>Vegan</Text>

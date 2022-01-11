@@ -1,9 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 import { Box, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Start from '../../../Rating/Start';
 
 interface property {
+  Id: string;
   imageUrl: string;
   imageAlt: string;
   title: string;
@@ -12,12 +14,19 @@ interface property {
 }
 
 const ItemRestaurant: React.FC<property> = ({
+  Id,
   imageUrl,
   imageAlt,
   title,
   reviewCount,
   rating,
 }: property) => {
+  const history = useHistory();
+
+  const toRestaurant = (id: string) => {
+    history.push('/restaurant', { params: id });
+  };
+
   return (
     <Box
       w="100%"
@@ -25,6 +34,7 @@ const ItemRestaurant: React.FC<property> = ({
       borderWidth="1px"
       borderRadius="30px"
       overflow="hidden"
+      onClick={() => toRestaurant(Id)}
     >
       <HStack>
         <Image boxSize="150px" src={imageUrl} alt={imageAlt} />
